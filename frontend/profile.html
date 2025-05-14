@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Profil – Parkeringsapp</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Hjem</a></li>
+            <li><a href="index.html">Parkering</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+            <li id="profile-container"></li> <!-- Profile will be injected here -->
+            <li id="login-link"><a href="login.html">Log ind</a></li>
+            <li id="logout-btn" style="display: none;"><button onclick="logout()">Log ud</button></li>
+        </ul>
+    </nav>
+    
+
+    <div class="profile-container">
+        <h2>Min Profil</h2>
+        
+        <p><strong>Brugernavn:</strong> <span id="profile-username"></span></p>
+        <p><strong>Oprettet:</strong> <span id="profile-date"></span></p>
+        <button id="delete-user-btn" class="delete-btn">Slet min bruger</button>
+
+    </div>
+
+    <section class="history-section">
+        <h2>Din reservationshistorik</h2>
+        <table id="history-table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Lokation</th>
+              <th>Plads</th>
+              <th>Start</th>
+              <th>Slut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Fyldes med data -->
+          </tbody>
+        </table>
+      </section>
+      
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        alert("Du skal være logget ind for at se din profil.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Brugernavn + dato
+    document.getElementById("profile-username").textContent = user.username;
+    const date = user.createdAt || new Date().toLocaleDateString();
+    document.getElementById("profile-date").textContent = date;
+
+    // 💾 Læs historik fra localStorage
+    const history = JSON.parse(localStorage.getItem("reservationHistory")) || [];
+    const userHistory = history
+  .filter(h => h.username === user.username)
+  .sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+
+
+    const tbody = document.querySelector("#history-table tbody");
+    tbody.innerHTML = "";
+
+    userHistory.forEach(res => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${new Date(res.startTime).toLocaleDateString()}</td>
+            <td>${res.locationName}</td>
+            <td>${res.spotLabel}</td>
+            <td>${new Date(res.startTime).toLocaleTimeString()}</td>
+            <td>${new Date(res.endTime).toLocaleTimeString()}</td>
+        `;
+        tbody.appendChild(row);
+    });
+});
+
+document.getElementById("delete-user-btn").addEventListener("click", () => {
+  if (!confirm("Er du sikker på, at du vil slette din bruger? Dette kan ikke fortrydes.")) return;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  let users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+  // Fjern brugeren fra listen
+  users = users.filter(u => u.username !== user.username);
+  localStorage.setItem("registeredUsers", JSON.stringify(users));
+
+  // Fjern brugerens historik (valgfrit)
+  let history = JSON.parse(localStorage.getItem("reservationHistory")) || [];
+  history = history.filter(h => h.username !== user.username);
+  localStorage.setItem("reservationHistory", JSON.stringify(history));
+
+  // Log brugeren ud
+  localStorage.removeItem("user");
+
+  alert("Din bruger er blevet slettet.");
+  window.location.href = "login.html";
+});
+
+
+        </script>
+        
+
+<script src="JS/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+/* ========= GRUNDLÆGGENDE ========= */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    min-height: 100vh;
+}
+  
+.navbar {
+    background: linear-gradient(to right, #2c3e50, #3498db);
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+  
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.navbar li {
+    display: inline;
+    margin: 15px;
+}
+  
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+  
+#reservation-controls {
+    margin-bottom: 20px;
+}
+  
+#parking-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+}
+  
+/* ========= PARKERINGSOMRÅDE ========= */
+.parking-area {
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: none;
+}
+  
+.parking-area h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+  
+.parking-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 15px;
+    margin: 25px 0;
+    transform: skew(-15deg);
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+  
+.parking-spot {
+    width: 80px;
+    height: 140px;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    border: 2px solid #e1e5ea;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+  
+.parking-spot::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(153, 153, 153, 0.1) 0px,
+        rgba(153, 153, 153, 0.1) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+}
+  
+.parking-spot.available {
+    background: linear-gradient(to bottom, #ffffff, #f0f3f6);
+}
+  
+.parking-spot.reserved {
+    background: linear-gradient(to bottom, #fff5f5, #ffe3e3);
+    border-color: #ffa8a8;
+}
+  
+.parking-spot.is-mine {
+    background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+    border-color: #64b5f6;
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.2);
+}
+  
+.parking-spot.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+  
+.parking-spot img.car-icon {
+    position: absolute;
+    width: 90%;
+    height: auto;
+    transform: skew(15deg);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+  
+.overlay-label {
+    background: linear-gradient(to right, #2c3e50, #3498db);
+    padding: 6px 12px;
+    border-radius: 20px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%) skew(15deg);
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+  
+.overlay-label strong {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+  
+.parking-road {
+    height: 60px;
+    width: 100%;
+    background: linear-gradient(to right, #3498db, #2c3e50);
+    position: relative;
+    margin: 30px 0;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+  
+.parking-road::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.8) 0px,
+        rgba(255,255,255,0.8) 30px,
+        transparent 30px,
+        transparent 60px
+    );
+    transform: translateY(-50%);
+}
+  
+/* Reverse angle for bottom row */
+.parking-row:nth-child(3) {
+    transform: skew(15deg);
+}
+  
+.parking-row:nth-child(3) .parking-spot img.car-icon,
+.parking-row:nth-child(3) .overlay-label {
+    transform: translateX(-50%) skew(-15deg);
+}
+  
+/* Add parking sign styling */
+.parking-sign {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #2196f3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 3;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 10px 0;
+    border: 2px solid white;
+}
+  
+.parking-sign::before {
+    content: 'P';
+}
+  
+.parking-spot.work {
+    width: 55px;
+    height: 90px;
+}
+  
+.parking-spot.home {
+    width: 75px;
+    height: 110px;
+    font-size: 15px;
+}
+  
+.parking-spot:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+  
+.car-icon {
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+  
+/* ========= HERO/HJEM ========= */
+.hero {
+    height: 100vh;
+    background: url('../images/7883033-digevej-114.jpg') center center / cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+}
+  
+.welcome-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    width: 90%;
+    transition: transform 0.3s ease;
+}
+  
+.welcome-box:hover {
+    transform: scale(1.02);
+}
+  
+.welcome-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+  
+.welcome-box .subtext {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #f0f0f0;
+    margin-bottom: 30px;
+}
+  
+.welcome-box button {
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+}
+  
+.welcome-box button:hover {
+    background: linear-gradient(135deg, #339dff, #004a99);
+    transform: scale(1.05);
+}
+  
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+  
+  
+/* ========= KONTAKT ========= */
+.contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    text-align: left;
+}
+  
+.contact-container h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+  
+.contact-container p {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+  
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+  
+.contact-form input,
+.contact-form textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+.contact-form button {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+  
+.contact-form button:hover {
+    background-color: #555;
+}
+  
+/* ========= LOGIN & PROFIL ========= */
+.login-container, .profile-container, form {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 500px;
+    text-align: left;
+}
+  
+input, button {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 5px 0;
+    width: 100%;
+}
+  
+button {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+button:hover {
+    background-color: #555;
+}
+  
+#message {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+  
+#logout {
+    display: block;
+    margin: 0 auto;
+}
+  
+h1, h2 {
+    margin-top: 1rem;
+}
+  
+/* ========= RESPONSIV ========= */
+@media (max-width: 768px) {
+    .parking-area {
+        width: 95%;
+    }
+    .parking-spot {
+        width: 45px;
+        height: 70px;
+        font-size: 12px;
+    }
+    .parking-road {
+        height: 40px;
+    }
+}
+  
+
+.parking-area-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+  
+.reservation-sidebar {
+    width: 280px;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: left;
+}
+  
+.reservation-sidebar h3 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+  
+.countdown-box {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+#live-countdown {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #3498db;
+}
+  
+#parking-carousel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    position: relative;
+}
+  
+.parking-carousel {
+    width: 100%;
+    max-width: 950px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.parking-layout-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px auto;
+    flex-wrap: wrap;
+}
+  
+.parking-slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transition: opacity 0.3s ease-in-out;
+}
+  
+  
+.parking-slide.active {
+    display: flex;
+}
+  
+.carousel-arrow {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+  
+.carousel-arrow:hover {
+    color: #000;
+}
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.carousel-btn:hover {
+    background-color: #555;
+}
+  
+  
+
+.carousel-btn {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.carousel-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+}
+
+#reservation-controls {
+    text-align: center;
+    margin: 20px auto;
+}
+  
+#reservation-time {
+    padding: 8px;
+    font-size: 1rem;
+    width: 200px;
+    max-width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  
+.history-section {
+    margin: 40px auto;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+  
+#history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+  
+#history-table th,
+#history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+  
+/* ========= ADMIN PANEL ========= */
+.admin-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+  
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+  
+.admin-header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+  
+.admin-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+  
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+  
+.admin-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+  
+.card-header {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.card-header h2 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin: 0;
+}
+  
+.card-content {
+    padding: 20px;
+}
+  
+.user-count {
+    background: #e9ecef;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #495057;
+}
+  
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.user-list li {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+  
+.user-list li:last-child {
+    border-bottom: none;
+}
+  
+.user-list li:hover {
+    background-color: #f8f9fa;
+}
+  
+.table-container {
+    overflow-x: auto;
+}
+  
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+  
+.admin-table th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+}
+  
+.admin-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+  
+.admin-table tr:hover {
+    background-color: #f8f9fa;
+}
+  
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: auto;
+}
+  
+.delete-btn:hover {
+    background: #c82333;
+}
+  
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 200px;
+    font-size: 0.9rem;
+}
+  
+.search-input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+  
+.reservation-filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+  
+@media (max-width: 768px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .admin-table {
+        font-size: 0.9rem;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        padding: 8px;
+    }
+}
+  

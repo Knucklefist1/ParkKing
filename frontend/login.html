@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Hjem</a></li>
+            <li><a href="index.html">Hjem</a></li>
+            <li><a href="index.html">Parkering</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+            <li id="profile-container"></li>
+            <li id="login-link"><a href="login.html">Log ind</a></li>
+            <li id="logout-btn" style="display: none;"><button onclick="logout()">Log ud</button></li>
+        </ul>
+    </nav>
+    
+    <h1>Login</h1>
+
+    <form id="login-form">
+        <input type="text" id="login-username" placeholder="Brugernavn" required>
+        <input type="password" id="login-password" placeholder="Adgangskode" required>
+        <button type="submit">Log ind</button>
+    </form>
+
+    <h1>Opret konto</h1>
+
+    <form id="signup-form">
+        <input type="text" id="signup-username" placeholder="Brugernavn" required>
+        <input type="password" id="signup-password" placeholder="Adgangskode" required>
+        <button type="submit">Opret konto</button>
+    </form>
+
+    <p id="message"></p>
+
+    <button id="logout" style="display: none;">Log ud</button>
+
+    <script src="JS/auth.js"></script>
+
+</body>
+</html>

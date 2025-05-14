@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>2D Parkeringsapp</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="home.html">Hjem</a></li>
+      <li><a href="index.html">Parkering</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+      <li id="profile-container"></li>
+      <li id="login-link"><a href="login.html">Log ind</a></li>
+      <li id="logout-btn" style="display: none;"><button onclick="logout()">Log ud</button></li>
+    </ul>
+  </nav>
+
+  <!-- Reservation Tidsvælger -->
+  <div id="reservation-controls" style="text-align:center; margin: 20px auto;">
+    <label for="reservation-time">Vælg afslutningstidspunkt:</label>
+    <input type="time" id="reservation-time">
+  </div>
+
+  <!-- Hele layoutet med sidebar og carousel -->
+  <div class="parking-layout-wrapper">
+    
+    <!-- Sidebar til visning af reservation -->
+    <aside id="reservation-info" class="reservation-sidebar">
+      <h3>Din reservation</h3>
+      <div id="reservation-details">
+        <p>Ingen aktiv reservation</p>
+      </div>
+    </aside>
+
+    <!-- Pilnavigation + slideområde -->
+    <div id="parking-carousel-wrapper" class="carousel-wrapper">
+      <button id="prev-area" class="carousel-btn left">←</button>
+
+      <div id="parking-carousel" class="parking-carousel">
+        <!-- Slides (.parking-slide) tilføjes dynamisk med JS -->
+      </div>
+
+      <button id="next-area" class="carousel-btn right">→</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="JS/script.js"></script>
+  <script src="JS/auth.js"></script>
+</body>
+</html>
