@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ✅ Check if someone is logged in already
+
 function checkLoginStatus() {
     const user = JSON.parse(localStorage.getItem("user"));
     const logoutBtn = document.getElementById("logout-btn");
@@ -39,7 +39,7 @@ function checkLoginStatus() {
 
 
 
-// ✅ Signup handler
+
 function handleSignup(e) {
     e.preventDefault();
     const username = document.getElementById('signup-username').value;
@@ -69,7 +69,7 @@ function handleSignup(e) {
 }
 
 
-// ✅ Login handler
+
 function handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById('login-username').value;
@@ -92,7 +92,7 @@ function handleLogin(e) {
 }
 
 
-// ✅ Logout function
+
 function logout() {
     localStorage.removeItem("user");
     showMessage("Du er logget ud!");
@@ -101,7 +101,7 @@ function logout() {
     }, 1000);
 }
 
-// ✅ Reusable message display
+
 function showMessage(msg) {
     const messageEl = document.getElementById("message");
     if (messageEl) {
