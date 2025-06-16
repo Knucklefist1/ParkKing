@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 
 // Importér ruter
-const parkingRoutes = require('./routes/parkingRoutes');  // Sørg for at denne fil eksisterer
+const parkingRoutes = require('./routes/parkingRoutes'); 
 const authRoutes = require('./routes/authRoutes');
 
 app.use('/api/parking', parkingRoutes);
