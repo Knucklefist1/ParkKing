@@ -1,6 +1,5 @@
 const parkingLocations = require('../models/parkingModel');
 
-// ⏱ Background job to release expired reservations
 setInterval(() => {
     const now = new Date();
     parkingLocations.forEach(location => {
@@ -18,12 +17,12 @@ setInterval(() => {
     });
 }, 60 * 1000); // Tjek hvert minut
 
-// 🔹 Hent alle parkeringslokationer
+//  Hent alle parkeringslokationer
 exports.getAllParkingLocations = (req, res) => {
     res.json(parkingLocations);
 };
 
-// 🔹 Reserver en plads
+//  Reserver en plads
 exports.reserveParkingSpot = (req, res) => {
     const { locationId, spotId } = req.params;
     const { username, durationMinutes } = req.body;
@@ -44,7 +43,7 @@ exports.reserveParkingSpot = (req, res) => {
         return res.status(400).json({ message: "Du har allerede reserveret en plads i dette område" });
     }
 
-    // ✅ Reserver og gem udløbstidspunkt
+    //  Reserver og gem udløbstidspunkt
     const expiresAt = new Date(Date.now() + (durationMinutes || 60) * 60000); // fallback til 60 min
     spot.status = "Optaget";
     spot.reservedBy = username;
@@ -53,7 +52,7 @@ exports.reserveParkingSpot = (req, res) => {
     res.json({ message: `Plads ${spot.location} er nu reserveret til ${expiresAt.toLocaleTimeString()}!`, spot });
 };
 
-// 🔹 Frigør en plads
+// Frigør en plads
 exports.releaseParkingSpot = (req, res) => {
     const { locationId, spotId } = req.params;
     const { username } = req.body;
@@ -73,7 +72,7 @@ exports.releaseParkingSpot = (req, res) => {
         return res.status(403).json({ message: "Du må kun frigive din egen plads" });
     }
 
-    // ✅ Frigør
+    // Frigør
     spot.status = "Ledig";
     spot.reservedBy = null;
     spot.reservedUntil = null;
